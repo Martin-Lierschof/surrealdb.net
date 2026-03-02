@@ -145,8 +145,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"GetAll{entityName}")
                 .WithSummary($"Get all {entityName} records.")
-                .Produces<IEnumerable<TEntity>>()
-                .WithOpenApi();
+                .Produces<IEnumerable<TEntity>>();
         }
 
         if (options?.EnableGetSingle ?? options?.EnableQueries ?? true)
@@ -175,8 +174,7 @@ public static class SurrealDbMinimalApisExtensions
                 .WithName($"Get{entityName}")
                 .WithSummary($"Get a single {entityName} record.")
                 .Produces<TEntity>()
-                .ProducesProblem(StatusCodes.Status404NotFound)
-                .WithOpenApi();
+                .ProducesProblem(StatusCodes.Status404NotFound);
         }
 
         if (options?.EnablePost ?? options?.EnableMutations ?? true)
@@ -196,8 +194,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"Create{entityName}")
                 .WithSummary($"Create a {entityName} record.")
-                .Produces<TEntity>()
-                .WithOpenApi();
+                .Produces<TEntity>();
         }
 
         if (options?.EnablePut ?? options?.EnableMutations ?? true)
@@ -216,8 +213,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"Update{entityName}")
                 .WithSummary($"Update a {entityName} record.")
-                .Produces<TEntity>()
-                .WithOpenApi();
+                .Produces<TEntity>();
         }
 
         if (options?.EnablePatchAll ?? options?.EnableMutations ?? true)
@@ -237,8 +233,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"PatchAll{entityName}")
                 .WithSummary($"Patch all {entityName} records.")
-                .Produces<IEnumerable<TEntity>>()
-                .WithOpenApi();
+                .Produces<IEnumerable<TEntity>>();
         }
 
         if (options?.EnablePatchSingle ?? options?.EnableMutations ?? true)
@@ -259,8 +254,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"Patch{entityName}")
                 .WithSummary($"Patch a single {entityName} record.")
-                .Produces<TEntity>()
-                .WithOpenApi();
+                .Produces<TEntity>();
         }
 
         if (options?.EnableDeleteAll ?? options?.EnableMutations ?? true)
@@ -276,8 +270,7 @@ public static class SurrealDbMinimalApisExtensions
                 )
                 .WithName($"DeleteAll{entityName}")
                 .WithSummary($"Delete all {entityName} records.")
-                .Produces(StatusCodes.Status200OK)
-                .WithOpenApi();
+                .Produces(StatusCodes.Status200OK);
         }
 
         if (options?.EnableDeleteSingle ?? options?.EnableMutations ?? true)
@@ -306,13 +299,12 @@ public static class SurrealDbMinimalApisExtensions
                 .WithName($"Delete{entityName}")
                 .WithSummary($"Delete a {entityName} record.")
                 .Produces(StatusCodes.Status200OK)
-                .ProducesProblem(StatusCodes.Status404NotFound)
-                .WithOpenApi();
+                .ProducesProblem(StatusCodes.Status404NotFound);
         }
 
         return endpoints;
     }
-    
+
     private static string GetDefaultTableName(Type entityType)
     {
         var tableAttribute = entityType.GetCustomAttribute(typeof(TableAttribute)) as TableAttribute;
@@ -320,7 +312,7 @@ public static class SurrealDbMinimalApisExtensions
         {
             return tableAttribute.Name;
         }
-        
+
         return entityType.Name;
     }
 }

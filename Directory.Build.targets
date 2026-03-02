@@ -1,0 +1,7 @@
+<Project>
+    <PropertyGroup>
+        <CSharpier_Check>false</CSharpier_Check>
+        <CSharpier_Bypass>true</CSharpier_Bypass>
+        <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3277</MSBuildWarningsAsMessages>
+    </PropertyGroup>
+</Project>

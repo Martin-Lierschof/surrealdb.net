@@ -13,8 +13,10 @@
 
 <p class="description">
     This component demonstrates extensive usage of Live Query using Reactive Extensions (Rx.NET).
-    You can simplify the realtime subscriptions logic by using the <a href="https://www.nuget.org/packages/SurrealDb.Reactive" target="_blank">SurrealDb.Reactive</a> package.
-    In this example, every change in the Kanban board is watched and the board is updated as soon as a new event is triggered: add, update or delete.
+    You can simplify the realtime subscriptions logic by using the <a
+    href="https://www.nuget.org/packages/SurrealDb.Reactive" target="_blank">SurrealDb.Reactive</a> package.
+    In this example, every change in the Kanban board is watched and the board is updated as soon as a new event is
+    triggered: add, update or delete.
 </p>
 
 @if (_loading)
@@ -23,30 +25,20 @@
 }
 else
 {
-    <MudDropContainer
-        @ref="_dropContainer"
-        T="DisplayableTask"
-        Items="_tasks"
-        ItemsSelector="@ItemSelector"
-        ItemDropped="ItemUpdated"
-        class="board"
-    >
+    <MudDropContainer        @ref="_dropContainer"        T="DisplayableTask"        Items="_tasks"        ItemsSelector="@ItemSelector"
+                             ItemDropped="ItemUpdated"        class="board">
         <ChildContent>
             @foreach (var column in _columns.OrderBy(c => c.Order))
             {
                 var dropzone = column.Id!.ToString();
 
                 <section>
-                    <MudList Clickable="false">
+                    <MudList T="DisplayableTask">
                         <MudListSubheader>
                             @column.Name
                         </MudListSubheader>
-                        <MudDropZone 
-                            T="DisplayableTask"
-                            Identifier="@dropzone"
-                            Class="flex-grow-1 card-list"
-                            AllowReorder="true" 
-                        />
+                        <MudDropZone T="DisplayableTask"                            Identifier="@dropzone"                            Class="flex-grow-1 card-list"
+                                     AllowReorder="true" />
                     </MudList>
 
                     <button class="btn action-btn" type="button" @onclick="() => OpenCreateTaskDialog(column)">
@@ -71,7 +63,7 @@ else
     private IEnumerable<DisplayableTask> _tasks => _columns.SelectMany(c => c.Tasks);
 
     private IDisposable? _subscription;
-    
+
     protected override async Task OnInitializedAsync()
     {
         _columns = await Client.Select<DisplayableColumn>(DisplayableColumn.Table);
@@ -89,7 +81,7 @@ else
                 });
             });
     }
-    
+
     void IDisposable.Dispose()
     {
         _subscription?.Dispose();
@@ -120,12 +112,12 @@ else
         }
 
         var moveTask = new MoveTask
-            {
-                Task = task.Id!,
-                From = RecordId.From(ColumnRecord.Table, fromColumn.Id!.DeserializeId<string>()),
-                To = RecordId.From(ColumnRecord.Table, toColumn.Id!.DeserializeId<string>()),
-                NewIndex = newIndex
-            };
+        {
+            Task = task.Id!,
+            From = RecordId.From(ColumnRecord.Table, fromColumn.Id!.DeserializeId<string>()),
+            To = RecordId.From(ColumnRecord.Table, toColumn.Id!.DeserializeId<string>()),
+            NewIndex = newIndex
+        };
         return Client.Create(MoveTask.Table, moveTask);
     }
 
@@ -136,7 +128,7 @@ else
         var dialog = await DialogService.ShowAsync<AddTaskDialog>("Add a task", dialogOptions);
         var result = await dialog.Result;
 
-        if (!result.Canceled && result.Data is AddTaskForm formData)
+        if (result is not null && !result.Canceled && result.Data is AddTaskForm formData)
         {
             await CreateTaskAsync(column, formData);
         }
@@ -144,14 +136,24 @@ else
 
     private Task CreateTaskAsync(DisplayableColumn column, AddTaskForm formData)
     {
-        var columnId = RecordId.From(ColumnRecord.Table, column.Id!.DeserializeId<string>());
+        if (formData.DueDate is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        if (column.Id is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        var columnId = RecordId.From(ColumnRecord.Table, column.Id.DeserializeId<string>());
 
         var @event = new CreateTask
-            {
-                Title = formData.Title,
-                DueDate = formData.DueDate!.Value,
-                Column = columnId
-            };
+        {
+            Title = formData.Title,
+            DueDate = formData.DueDate.Value,
+            Column = columnId
+        };
 
         return Client.Create(CreateTask.Table, @event);
     }

@@ -10,20 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services
-    .AddEndpointsApiExplorer()
-    .AddOpenApi(options =>
-    {
-        options.AddDocumentTransformer(
-            (document, _, _) =>
-            {
-                document.Info.Title = "MinimalApis Examples API";
-                document.Info.Version = "v1";
-
-                return Task.CompletedTask;
-            }
-        );
-    });
+services.AddEndpointsApiExplorer();
 
 services.AddSurreal(configuration.GetConnectionString("SurrealDB")!);
 
@@ -40,9 +27,6 @@ app.MapGroup("/api")
 
 if (app.Environment.IsDevelopment())
 {
-    // 💡 Enable OpenAPI document generation (e.g. "/openapi/v1.json")
-    app.MapOpenApi();
-
     // 💡 Display OpenAPI User Interfaces (Swagger UI, Scalar)
     app.UseSwaggerUI(options =>
     {
