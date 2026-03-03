@@ -14,7 +14,7 @@
     <PackageVersion Include="DotNet.ReproducibleBuilds" Version="*" />
     <PackageVersion Include="FluentAssertions" Version="*" />
     <PackageVersion Include="Microsoft.AspNetCore.JsonPatch.SystemTextJson" Version="*" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="*" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="*" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="*" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="*" />
@@ -23,7 +23,7 @@
     <PackageVersion Include="Microsoft.OpenApi" Version="*" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="*" />
     <PackageVersion Include="Microsoft.Spatial" Version="*" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="*" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.5.2" />
     <PackageVersion Include="MudBlazor" Version="*" />
     <PackageVersion Include="Pidgin" Version="*" />
     <PackageVersion Include="Scalar.AspNetCore" Version="*" />
